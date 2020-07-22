@@ -4,7 +4,10 @@ using System.Text;
 
 namespace DAL.Interfaces
 {
-	public interface IUnitOfWork
+	public interface IUnitOfWork : IDisposable
 	{
+		ILaptopsRepository Laptops { get; }
+		
+		int Complete();
 	}
 }
