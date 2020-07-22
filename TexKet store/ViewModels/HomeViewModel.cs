@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TexKet_store.DAL.Models;
+using Common.Entities;
 using TexKet_store.ViewModels;
 
 namespace TexKet_store.ViewModels
