@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Entities;
 
 namespace DAL.Interfaces
 {
-	interface ILaptopsRepository
+	public interface ILaptopsRepository
 	{
+		/// <summary>
+		/// Returns cheap laptops first
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<Laptop> GetCheapLaptops();
 	}
 }
