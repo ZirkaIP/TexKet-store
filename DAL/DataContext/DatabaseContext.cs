@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Common.Users.Models;
 using Common.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace DAL.DataContext
 {
-	public class DatabaseContext : DbContext
+	public class DatabaseContext : IdentityDbContext<AppUser, AppRole, Guid>
 	{
-
-		public class OptionsBuild
+		/*
+		 public class OptionsBuild
 		{
 			public OptionsBuild()
 			{
@@ -22,15 +25,15 @@ namespace DAL.DataContext
 			public DbContextOptionsBuilder<DatabaseContext> OpsBuilder { get; set; }
 			public DbContextOptions<DatabaseContext> DbOptions { get; set; }
 			private AppConfiguration Settings { get; set; }
-		}
+		} 
 
-		public static  OptionsBuild Options = new OptionsBuild();
+		public static  OptionsBuild Options = new OptionsBuild();  */
 
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
 		public DbSet<Laptop> Laptops { get; set; }
 		public DbSet<Camera> Cameras { get; set; }
 		public DbSet<Smartphone> SmartPhones{ get; set; }
-		public DbSet<User> Users { get; set; }
 	}
+
 }
