@@ -9,6 +9,6 @@ namespace TexKet_store.ViewModels
 {
 	public class HomeViewModel
 	{
-		private IEnumerable<Laptop> FavoriteLaptops { get; set; }
+		public IEnumerable<Laptop>  Laptops { get; set; }
 	}
 }

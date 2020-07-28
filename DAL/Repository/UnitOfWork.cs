@@ -7,7 +7,7 @@ using DAL.Interfaces;
 
 namespace DAL.Repository
 {
-	class UnitOfWork  : IUnitOfWork
+	public class UnitOfWork  : IUnitOfWork
 	{
 		private readonly DatabaseContext _context;
 

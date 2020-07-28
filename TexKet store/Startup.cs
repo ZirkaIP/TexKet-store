@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common.Users.Models;
 using DAL.DataContext;
+using DAL.Interfaces;
+using DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +36,7 @@ namespace TexKet_store
 				.AddEntityFrameworkStores<DatabaseContext>()
 				.AddDefaultTokenProviders();
 			services.AddMvc();
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddSession();
 			var loggingConfiguration = new ConfigurationBuilder().AddJsonFile("logging.settings.json").Build();
 		}

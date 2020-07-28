@@ -1,6 +1,11 @@
 ﻿@model TexKet_store.ViewModels.HomeViewModel
 
-
-@{
-}
-<p>Hello world and other aliens</p>
+<h2>Top deals</h2>
+<div class="row mt-5 mb-2">
+	@{
+		foreach (Laptop favlap in Model.Laptops)
+		{
+			@Html.Partial("AllLaptop", favlap)
+		}
+	}
+</div>
