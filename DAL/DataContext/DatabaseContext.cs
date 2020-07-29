@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Common.Users.Models;
 using Common.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +33,7 @@ namespace DAL.DataContext
 		public DbSet<Laptop> Laptops { get; set; }
 		public DbSet<Camera> Cameras { get; set; }
 		public DbSet<Smartphone> SmartPhones{ get; set; }
+		public DbSet<Category> Categories { get; set; }
 	}
 
 }

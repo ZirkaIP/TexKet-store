@@ -9,7 +9,7 @@ using DAL.DataContext;
 
 namespace DAL.Repository
 {
-	class LaptopsRepository : Repository<Laptop>, ILaptopsRepository
+	public class LaptopsRepository : Repository<Laptop>, ILaptopsRepository
 	{
 		public LaptopsRepository(DatabaseContext context) : base(context)
 		{

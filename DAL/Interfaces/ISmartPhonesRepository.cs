@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Entities;
 
 namespace DAL.Interfaces
 {
-	interface ISmartPhonesRepository
+	public interface ISmartPhonesRepository
 	{
+		IEnumerable<Smartphone> GetCheapSmartPhones();
 	}
 }

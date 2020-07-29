@@ -15,6 +15,8 @@ namespace DAL.Repository
 		{
 			_context = context;
 			Laptops = new LaptopsRepository(_context);
+			Cameras = new  CameraRepository(_context);
+			Smartphones = new SmartphoneRepository(_context);
 		}
 
 		public int Complete()
@@ -25,7 +27,11 @@ namespace DAL.Repository
 		public void Dispose()
 		{
 			_context.Dispose();
+			GC.SuppressFinalize(this);
 		}
+
 		public ILaptopsRepository Laptops { get; set; }
+		public ICameraRepository Cameras { get; set; }
+		public ISmartPhonesRepository Smartphones { get; set; }
 	}
 }

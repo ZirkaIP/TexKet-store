@@ -11,17 +11,20 @@ namespace TexKet_store.Controllers
 	public class HomeController:Controller
 	{
 		private readonly IUnitOfWork _UoW;
+		private DatabaseContext _context;
 
-		public HomeController(IUnitOfWork unitOfWork)
+		public HomeController(IUnitOfWork unitOfWork,DatabaseContext context)
 		{
 			_UoW = unitOfWork;
+			_context = context;
 		}
+		
 		public IActionResult Index()
 		{
+			LaptopsRepository laps = new LaptopsRepository(_context);
 			var homeLaptops = new HomeViewModel
 			{
-				Laptops = _UoW.Laptops.GetCheapLaptops()
-
+				Laptops = laps.GetAll()
 			};
 			;
 			return View(homeLaptops);
