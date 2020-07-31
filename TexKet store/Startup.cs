@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL.Interfaces;
+using BLL.Services;
 using Common.Users.Models;
 using DAL.DataContext;
-using DAL.Interfaces;
 using DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Common.Interfaces;
 
 namespace TexKet_store
 {
@@ -36,6 +38,7 @@ namespace TexKet_store
 				.AddDefaultTokenProviders();
 			services.AddMvc();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddScoped<IOrderService, OrderService>();
 			services.AddSession();
 			var loggingConfiguration = new ConfigurationBuilder().AddJsonFile("logging.settings.json").Build();
 		}
@@ -48,7 +51,6 @@ namespace TexKet_store
 			{
 				app.UseDeveloperExceptionPage();
 			}
-
 			app.UseStaticFiles();
 			app.UseStatusCodePages();
 			app.UseAuthentication();

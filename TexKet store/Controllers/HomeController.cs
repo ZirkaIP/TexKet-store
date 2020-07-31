@@ -1,5 +1,8 @@
-﻿using DAL.DataContext;
-using DAL.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using BLL.Interfaces;
+using Common.Interfaces;
+using DAL.DataContext;
 using DAL.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
@@ -8,26 +11,24 @@ using TexKet_store.ViewModels;
 
 namespace TexKet_store.Controllers
 {
+	public class OrderRequest
+	{
+		public Guid ProductId { get; set; }
+		public string UserAddress { get; set; }
+		public uint ProductAmount { get; set; }
+	}
+
 	public class HomeController:Controller
 	{
-		private readonly IUnitOfWork _UoW;
-		private DatabaseContext _context;
-
-		public HomeController(IUnitOfWork unitOfWork,DatabaseContext context)
-		{
-			_UoW = unitOfWork;
-			_context = context;
-		}
+		public async Task<IActionResult> Index(
 		
-		public IActionResult Index()
+			[FromServices] IOrderService orderService,
+			[FromBody] OrderRequest orderRequest
+			)
 		{
-			LaptopsRepository laps = new LaptopsRepository(_context);
-			var homeLaptops = new HomeViewModel
-			{
-				Laptops = laps.GetAll()
-			};
-			;
-			return View(homeLaptops);
+			var orderResult = await orderService.Create(orderRequest.ProductId, orderRequest.ProductAmount,
+				orderRequest.UserAddress);
+			return View(orderResult);
 		}
 	}
 }

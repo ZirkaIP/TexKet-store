@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DAL.Interfaces
+namespace Common.Interfaces
 {
 	interface IUsersRepository
 	{

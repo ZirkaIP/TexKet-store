@@ -1,11 +1,10 @@
-﻿@model TexKet_store.ViewModels.HomeViewModel
+﻿@using Common.Models
+@model TexKet_store.ViewModels.HomeViewModel
 
 <h2>Top deals</h2>
 <div class="row mt-5 mb-2">
 	@{
-		foreach (Laptop favlap in Model.Laptops)
-		{
-			@Html.Partial("AllLaptop", favlap)
-		}
+		Model.OrderDetails.
 	}
+	<p>@Model.OrderDetails.</p>
 </div>

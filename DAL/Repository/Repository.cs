@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using DAL.Interfaces;
+using System.Threading;
+using System.Threading.Tasks;
+using Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
-	public class Repository<T> : IGenericRepository<T> where T: class
+	public class Repository<TEntity> : IGenericRepository<TEntity> where TEntity: class
 	{
 		protected readonly DbContext Context;
 
@@ -17,39 +19,53 @@ namespace DAL.Repository
 			Context = context;
 		}
 
-		public T Get(int id)
+		public async Task AddAsync(TEntity entity)
 		{
-			return Context.Set<T>().Find(id);
+			await Context.Set<TEntity>().AddAsync(entity);
+			await Context.SaveChangesAsync();
 		}
 
-		public IEnumerable<T> GetAll()
+		public async Task AddRangeAsync(IEnumerable<TEntity> entities)
 		{
-			return Context.Set<T>().ToList();
+			await Context.Set<TEntity>().AddRangeAsync(entities);
+			await Context.SaveChangesAsync();
 		}
 
-		public IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate)
+		public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
 		{
-			return Context.Set<T>().Where(predicate);
+			return Context.Set<TEntity>().AsNoTracking().Where(predicate);
 		}
 
-		public void Add(T entity)
+		public async  Task<IEnumerable<TEntity>> GetAllAsync()
 		{
-			Context.Set<T>().Add(entity);
+			return await Context.Set<TEntity>().ToListAsync();
 		}
 
-		public void AddRange(IEnumerable<T> entities)
+		public  ValueTask<TEntity> GetByIdAsync(int id)
 		{
-			Context.Set<T>().AddRange(entities);
+			return Context.Set<TEntity>().FindAsync(id);
 		}
 
-		public void Delete(T entity)
+		public void Remove(TEntity entity)
 		{
-			Context.Set<T>().Remove(entity);
+			Context.Set<TEntity>().Remove(entity);
+			Context.SaveChanges();
 		}
 
-		public void DeleteRange(IEnumerable<T> entities)
+		public void RemoveRange(IEnumerable<TEntity> entities)
 		{
-			Context.Set<T>().RemoveRange(entities);
+			Context.Set<TEntity>().RemoveRange(entities);
+			Context.SaveChanges();
+		}
+
+		public async Task UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+		{
+			foreach (var entity in entities)
+			{
+				 Context.Entry(entity).State = EntityState.Modified;
+			}
+
+			await Context.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

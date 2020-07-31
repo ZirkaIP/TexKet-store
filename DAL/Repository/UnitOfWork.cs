@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Common.Entities;
+using Common.Interfaces;
 using DAL.DataContext;
-using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DAL.Repository
 {
@@ -14,14 +16,22 @@ namespace DAL.Repository
 		public UnitOfWork(DatabaseContext context)
 		{
 			_context = context;
-			Laptops = new LaptopsRepository(_context);
-			Cameras = new  CameraRepository(_context);
-			Smartphones = new SmartphoneRepository(_context);
+			 Laptops = new Repository<Laptop>(_context);
+			 Cameras = new  Repository<Camera>(_context);
+			 Smartphones = new Repository<Smartphone>(_context);
 		}
 
-		public int Complete()
+		public IGenericRepository<Laptop> Laptops { get; }
+
+		public IGenericRepository<Camera> Cameras { get; }
+
+		public IGenericRepository<Smartphone> Smartphones { get; }
+
+		public IGenericRepository<Order> Orders { get; }
+
+		public IDbContextTransaction BeginTransaction()
 		{
-			return _context.SaveChanges();
+			return _context.Database.BeginTransaction();
 		}
 
 		public void Dispose()
@@ -30,8 +40,5 @@ namespace DAL.Repository
 			GC.SuppressFinalize(this);
 		}
 
-		public ILaptopsRepository Laptops { get; set; }
-		public ICameraRepository Cameras { get; set; }
-		public ISmartPhonesRepository Smartphones { get; set; }
 	}
 }
