@@ -10,7 +10,6 @@ namespace TexKet_store.ViewModels
 {
 	public class HomeViewModel
 	{
-		public IEnumerable<Laptop> Laptops { get; set; }
 		public OrderDetails OrderResult { get; set; }
 	}
 }
