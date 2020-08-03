@@ -11,11 +11,11 @@ namespace DAL.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Camera> builder)
 		{
+			builder.HasKey(c => c.Id);
+
 			builder
-				.HasKey(c => c.Id);
-			builder
-				.Property(c => c.Id)
-				.UseIdentityColumn();
+				.Property(c => c.Id);
+
 			builder
 				.Property(c => c.Brand)
 				.IsRequired()

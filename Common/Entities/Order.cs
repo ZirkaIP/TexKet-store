@@ -10,6 +10,7 @@ namespace Common.Entities
 		public Guid OrderId { get; set; }
 
 		public int Amount { get; set; }
-		public string UserAdress { get; set; }
+
+		public string UserAddress { get; set; }
 	}
 }

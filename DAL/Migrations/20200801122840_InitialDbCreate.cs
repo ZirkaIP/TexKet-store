@@ -39,7 +39,9 @@ namespace DAL.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    Lastname = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,13 +52,11 @@ namespace DAL.Migrations
                 name: "Cameras",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(nullable: true),
-                    Model = table.Column<string>(nullable: true),
-                    IsAvailable = table.Column<bool>(nullable: false),
-                    Price = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    Brand = table.Column<string>(maxLength: 30, nullable: false),
+                    Model = table.Column<string>(maxLength: 50, nullable: false),
+                    AvailableQuantity = table.Column<int>(nullable: false),
+                    Price = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,33 +64,55 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Laptops",
+                name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(nullable: true),
-                    Model = table.Column<string>(nullable: true),
-                    IsAvailable = table.Column<bool>(nullable: false),
-                    Price = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Laptops", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Laptops",
+                columns: table => new
+                {
+                    LaptopId = table.Column<Guid>(nullable: false),
+                    Brand = table.Column<string>(maxLength: 30, nullable: false),
+                    Model = table.Column<string>(maxLength: 50, nullable: false),
+                    AvailableQuantity = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Laptops", x => x.LaptopId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<Guid>(nullable: false),
+                    Amount = table.Column<int>(nullable: false),
+                    UserAddress = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SmartPhones",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(nullable: true),
-                    Model = table.Column<string>(nullable: true),
-                    IsAvailable = table.Column<bool>(nullable: false),
-                    Price = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    Brand = table.Column<string>(maxLength: 30, nullable: false),
+                    Model = table.Column<string>(maxLength: 50, nullable: false),
+                    AvailableQuantity = table.Column<int>(nullable: false),
+                    Price = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -264,7 +286,13 @@ namespace DAL.Migrations
                 name: "Cameras");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "Laptops");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "SmartPhones");

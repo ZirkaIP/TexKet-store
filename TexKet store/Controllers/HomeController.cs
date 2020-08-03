@@ -18,16 +18,19 @@ namespace TexKet_store.Controllers
 		public uint ProductAmount { get; set; }
 	}
 
-	public class HomeController:Controller
+	public class HomeController : Controller
+
 	{
-		public async Task<IActionResult> Index(
-		
-			[FromServices] IOrderService orderService,
-			[FromBody] OrderRequest orderRequest
-			)
+		private readonly OrderRequest _orderRequest =new OrderRequest();
+		private readonly IOrderService _orderService;
+		public HomeController( IOrderService orderService)
 		{
-			var orderResult = await orderService.Create(orderRequest.ProductId, orderRequest.ProductAmount,
-				orderRequest.UserAddress);
+			_orderService = orderService;
+		}
+		public async Task<IActionResult> Index()
+		{
+			var orderResult = await _orderService.Create(_orderRequest.ProductId, _orderRequest.ProductAmount,
+				_orderRequest.UserAddress);
 			return View(orderResult);
 		}
 	}

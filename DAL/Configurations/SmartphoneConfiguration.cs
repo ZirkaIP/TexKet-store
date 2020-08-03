@@ -13,9 +13,9 @@ namespace DAL.Configurations
 	{
 		builder
 			.HasKey(s => s.Id);
+
 		builder
-			.Property(s => s.Id)
-			.UseIdentityColumn();
+			.Property(s => s.Id);
 		builder
 			.Property(s => s.Brand)
 			.IsRequired()

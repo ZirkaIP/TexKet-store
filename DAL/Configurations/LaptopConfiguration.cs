@@ -11,10 +11,11 @@ namespace DAL.Configurations
 		public void Configure(EntityTypeBuilder<Laptop> builder)
 		{
 			builder
-				.HasKey(l => l.Id);
+				.HasKey(l => l.LaptopId);
+
 			builder
-				.Property(l => l.Id)
-				.UseIdentityColumn();
+				.Property(l => l.LaptopId);
+
 			builder
 				.Property(l => l.Brand)
 				.IsRequired()

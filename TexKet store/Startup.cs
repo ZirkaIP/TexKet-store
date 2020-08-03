@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using BLL.Interfaces;
 using BLL.Services;
+using Common.Interfaces;
 using Common.Users.Models;
 using DAL.DataContext;
 using DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Common.Interfaces;
+using Microsoft.OpenApi.Models;
+using MyMusic.Api.Extensions;
+using TexKet_store.Settings;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace TexKet_store
 {
@@ -30,16 +31,56 @@ namespace TexKet_store
 
 	public void ConfigureServices(IServiceCollection services)
 		{
+			services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
+			var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
 			services.AddDbContext<DatabaseContext>(options =>
 				options.UseSqlServer(
 					Configuration["ConnectionStrings:DefaultConnection"]));
-			services.AddIdentity<AppUser, AppRole>()
+			services.AddIdentity<AppUser, AppRole>(options =>
+				{
+					options.Password.RequiredLength = 8;
+					options.Password.RequireNonAlphanumeric = true;
+					options.Password.RequireUppercase = true;
+					options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1d);
+				})
 				.AddEntityFrameworkStores<DatabaseContext>()
 				.AddDefaultTokenProviders();
+			services.AddSwaggerGen(options =>
+			{
+				options.SwaggerDoc("v1", new OpenApiInfo { Title = "TexKet store", Version = "v1" });
+
+				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				{
+					Description = "JWT containing userid claim",
+					Name = "Authorization",
+					In = ParameterLocation.Header,
+					Type = SecuritySchemeType.ApiKey,
+				});
+
+				var security =
+					new OpenApiSecurityRequirement
+					{
+						{
+							new OpenApiSecurityScheme
+							{
+								Reference = new OpenApiReference
+								{
+									Id = "Bearer",
+									Type = ReferenceType.SecurityScheme
+								},
+								UnresolvedReference = true
+							},
+							new List<string>()
+						}
+					};
+				options.AddSecurityRequirement(security);
+			});
+			services.AddAutoMapper(typeof(Startup));
 			services.AddMvc();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IOrderService, OrderService>();
 			services.AddSession();
+			services.AddAuth(jwtSettings);
 			var loggingConfiguration = new ConfigurationBuilder().AddJsonFile("logging.settings.json").Build();
 		}
 
@@ -53,13 +94,19 @@ namespace TexKet_store
 			}
 			app.UseStaticFiles();
 			app.UseStatusCodePages();
-			app.UseAuthentication();
 			app.UseRouting();
-
+			app.UseAuth();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}"
 				);
+			});
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c =>
+			{
+				c.RoutePrefix = "";
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "TexKet Store");
 			});
 		}
 	}

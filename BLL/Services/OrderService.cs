@@ -23,7 +23,7 @@ namespace BLL.Services
 				await using (var transaction = _unitOfWork.BeginTransaction())
 				{
 					var laptopsRepo = _unitOfWork.Laptops;
-					var laptop = laptopsRepo.FindBy(l => l.Id == productId).FirstOrDefault();
+					var laptop = laptopsRepo.FindBy(l => l.LaptopId == productId).FirstOrDefault();
 					laptop.AvailableQuantity -= (int) productAmount;
 
 					await laptopsRepo.UpdateAsync(new[] {laptop});
@@ -32,7 +32,7 @@ namespace BLL.Services
 					{
 						OrderId = Guid.NewGuid(),
 						Amount = (int) productAmount,
-						UserAdress = userAddress
+						UserAddress = userAddress
 					};
 
 					await _unitOfWork.Orders.AddAsync(order);

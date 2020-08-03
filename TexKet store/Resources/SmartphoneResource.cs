@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Common.Entities
+namespace TexKet_store.Resources
 {
-	public class Smartphone
+	public class SmartphoneResource
 	{
 		public Guid Id { get; set; }
 
@@ -15,6 +16,5 @@ namespace Common.Entities
 		public int AvailableQuantity { get; set; }
 
 		public int Price { get; set; }
-
 	}
 }

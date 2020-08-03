@@ -11,24 +11,6 @@ namespace DAL.DataContext
 {
 	public class DatabaseContext : IdentityDbContext<AppUser, AppRole, Guid>
 	{
-		/*
-		 public class OptionsBuild
-		{
-			public OptionsBuild()
-			{
-				Settings = new AppConfiguration(); 
-				OpsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-				OpsBuilder.UseSqlServer(Settings.SqlConnectionString);
-				DbOptions = OpsBuilder.Options;
-			}
-
-			public DbContextOptionsBuilder<DatabaseContext> OpsBuilder { get; set; }
-			public DbContextOptions<DatabaseContext> DbOptions { get; set; }
-			private AppConfiguration Settings { get; set; }
-		} 
-
-		public static  OptionsBuild Options = new OptionsBuild();  */
-
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
 		{
 			ChangeTracker.AutoDetectChangesEnabled = false;
@@ -38,9 +20,13 @@ namespace DAL.DataContext
 		public DbSet<Camera> Cameras { get; set; }
 		public DbSet<Smartphone> SmartPhones{ get; set; }
 		public DbSet<Category> Categories { get; set; }
+		public DbSet<Order> Orders { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
+
+			base.OnModelCreating(builder);
+
 			builder
 				.ApplyConfiguration(new LaptopConfiguration());
 
