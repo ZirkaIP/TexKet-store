@@ -29,7 +29,7 @@ namespace Common.Interfaces
         /// </summary>
         /// <param name="predicate">Search predicate (LINQ)</param>
         /// <returns>IEnumerable lists</returns>
-        IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Add new entity

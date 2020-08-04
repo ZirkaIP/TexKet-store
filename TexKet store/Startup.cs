@@ -15,9 +15,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MyMusic.Api.Extensions;
 using TexKet_store.Settings;
 using Swashbuckle.AspNetCore.Swagger;
+using TexKet_store.Extensions;
 
 namespace TexKet_store
 {
