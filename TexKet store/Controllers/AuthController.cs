@@ -52,6 +52,12 @@ namespace TexKet_store.Controllers
 			return Problem(userCreateResult.Errors.First().Description, null, 500);
 		}
 
+		//[HttpGet]
+		public IActionResult Register()
+		{
+			return View();
+		}
+
 		[HttpPost("SignIn")]
 		public async Task<IActionResult> SignIn(UserLoginResource userLoginResource)
 		{

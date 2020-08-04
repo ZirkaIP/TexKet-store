@@ -6,7 +6,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using TexKet_store.Settings;
 
-namespace MyMusic.Api.Extensions
+namespace TexKet_store.Extensions
 {
 	public static class AuthExtensions
 	{
