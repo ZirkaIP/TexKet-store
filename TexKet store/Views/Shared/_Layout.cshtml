@@ -2,8 +2,21 @@
 
 <html>
 <head>
-	<link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-	<meta name="viewport" content="width=device-width" />
+	<environment include="Development">
+		<link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+	</environment>
+	<environment exclude="Development">
+		<link rel="stylesheet" 
+		      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" 
+		      integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" 
+		      crossorigin="anonymous"
+		      asp-fallback-href="~/wwwroot/lib/bootstrap/css/bootstrap.min.css"
+		      asp-fallback-test-class="sr-only"
+		      asp-fallback-test-property="position"
+		      asp-fallback-test-value="absolute"
+		      asp-suppress-fallback-integrity="true">
+	</environment>
+	<meta name="viewport" content="width=device-width"/>
 	<title>@ViewBag.Title</title>
 </head>
 <body>
@@ -14,9 +27,9 @@
 			<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 				<a class="navbar-brand" asp-controller="Home" asp-action="Index">IRP</a>
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-					<li class="nav-item active">
-						<a class="nav-link" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
-					</li>
+					@*<li class="nav-item active">
+			<a class="nav-link" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+		</li>*@
 
 					<li class="nav-item active">
 						<a class="nav-link" href="/Laptops/List/">All</a>
@@ -26,19 +39,17 @@
 							Category
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<li><a class="dropdown-item" href="/Laptops/List/xiaomi">Xiaomi</a></li>
-							<li><a class="dropdown-item" href="/Laptops/List/apple">Apple</a></li>
-							<li><a class="dropdown-item" href="/Laptops/List/asus">Asus</a></li>
-							<li><a class="dropdown-item" href="/Laptops/List/dell">Dell</a></li>
-							<li><a class="dropdown-item" href="/Laptops/List/lenovo">Lenovo</a></li>
+							<li><a class="dropdown-item" href="/Laptops/List/xiaomi">Laptops</a></li>
+							<li><a class="dropdown-item" href="/Laptops/List/apple">Cameras</a></li>
+							<li><a class="dropdown-item" href="/Laptops/List/asus">Smartphones</a></li>
 						</ul>
 					</li>
 				</ul>
-				<form class="form-inline my-2 my-lg-0">
+				<form class="form-inline my-2 my-lg-0 m-1">
 					<button class="btn btn-outline-success my-2 my-sm-1" type="submit" asp-controller="Auth" asp-action="Register">SignUp</button>
 				</form>
-				<form class="form-inline my-2 my-lg-0">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit" asp-controller="ShopCart" asp-action="index">Cart</button>
+				<form class="form-inline my-2 my-lg-0 m-1">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit" asp-controller="ShopCart" asp-action="ShopCart">Cart</button>
 				</form>
 			</div>
 		</nav>

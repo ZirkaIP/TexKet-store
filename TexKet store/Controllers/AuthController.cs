@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -13,15 +14,16 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TexKet_store.Resources;
 using TexKet_store.Settings;
+using TexKet_store.ViewModels;
 
 namespace TexKet_store.Controllers
 {
 	[Route("api/[controller]")]
-	[ApiController]
 	public class AuthController : Controller
 	{
 		private readonly IMapper _mapper;
 		private readonly UserManager<AppUser> _userManager;
+		private readonly SignInManager<AppUser> _signInManager;
 		private readonly RoleManager<AppRole> _roleManager;
 		private readonly JwtSettings _jwtSettings;
 
@@ -29,35 +31,52 @@ namespace TexKet_store.Controllers
 		public AuthController(IMapper mapper,
 			UserManager<AppUser> userManager,
 			RoleManager<AppRole> roleManager,
+			SignInManager<AppUser> signInManager,
 			IOptionsSnapshot<JwtSettings> jwtSettings)
 		{
 			_mapper = mapper;
 			_userManager = userManager;
 			_roleManager = roleManager;
+			_signInManager = signInManager;
 			_jwtSettings = jwtSettings.Value;
 		}
-
-		[HttpPost("signup")]
-		public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
-		{
-			var user = _mapper.Map<UserSignUpResource, AppUser>(userSignUpResource);
-
-			var userCreateResult = await _userManager.CreateAsync(user, userSignUpResource.Password);
-
-			if (userCreateResult.Succeeded)
-			{
-				return Created(string.Empty, string.Empty);
-			}
-
-			return Problem(userCreateResult.Errors.First().Description, null, 500);
-		}
-
-		//[HttpGet]
+		[ActionName("Register")]
+		[HttpGet]
 		public IActionResult Register()
 		{
 			return View();
 		}
 
+		
+		[HttpPost]
+		public async Task<IActionResult> Register(RegisterViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+
+				var user = new AppUser
+				{
+					UserName = model.Email,
+					Email = model.Email
+				};
+				var createResult = await _userManager.CreateAsync(user, model.Password);
+				if (createResult.Succeeded)
+				{
+					await _signInManager.SignInAsync(user, isPersistent: false);
+					return RedirectToAction("index", "Home");
+				}
+
+				foreach (var error in createResult.Errors)
+				{
+					ModelState.AddModelError("", error.Description);
+				}
+			}
+
+			return View(model);
+		}
+	
+
+	
 		[HttpPost("SignIn")]
 		public async Task<IActionResult> SignIn(UserLoginResource userLoginResource)
 		{

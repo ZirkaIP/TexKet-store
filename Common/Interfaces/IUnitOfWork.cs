@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Entities;
+using Common.Models;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Common.Interfaces
@@ -13,6 +14,7 @@ namespace Common.Interfaces
 		IGenericRepository<Camera> Cameras { get; }
 		IGenericRepository<Smartphone> Smartphones { get; }
 		IGenericRepository<Order> Orders { get; }
+		IGenericRepository<ShopCartItem> ShopCartItems { get; }
 
 		public IDbContextTransaction BeginTransaction();
 

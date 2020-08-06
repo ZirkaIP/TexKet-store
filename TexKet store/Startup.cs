@@ -79,6 +79,7 @@ namespace TexKet_store
 			services.AddMvc();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IOrderService, OrderService>();
+			services.AddScoped<IShopCartService, ShopCartService>();
 			services.AddSession();
 			services.AddAuth(jwtSettings);
 			var loggingConfiguration = new ConfigurationBuilder().AddJsonFile("logging.settings.json").Build();

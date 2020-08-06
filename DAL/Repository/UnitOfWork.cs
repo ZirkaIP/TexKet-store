@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Entities;
 using Common.Interfaces;
+using Common.Models;
 using DAL.DataContext;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -19,6 +20,8 @@ namespace DAL.Repository
 			 Laptops = new Repository<Laptop>(_context);
 			 Cameras = new  Repository<Camera>(_context);
 			 Smartphones = new Repository<Smartphone>(_context);
+			 Orders = new Repository<Order>(_context);
+			 ShopCartItems = new Repository<ShopCartItem>(_context);
 		}
 
 		public IGenericRepository<Laptop> Laptops { get; }
@@ -28,6 +31,8 @@ namespace DAL.Repository
 		public IGenericRepository<Smartphone> Smartphones { get; }
 
 		public IGenericRepository<Order> Orders { get; }
+
+		public IGenericRepository<ShopCartItem> ShopCartItems { get; }
 
 		public IDbContextTransaction BeginTransaction()
 		{
