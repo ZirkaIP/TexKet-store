@@ -21,7 +21,7 @@ namespace TexKet_store.Controllers
 	public class HomeController : Controller
 
 	{
-		private readonly OrderRequest _orderRequest =new OrderRequest();
+		private readonly OrderRequest _orderRequest = new OrderRequest();
 		private readonly IOrderService _orderService;
 		public HomeController( IOrderService orderService)
 		{

@@ -13,7 +13,7 @@ namespace DAL.DataContext
 	{
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
 		{
-			ChangeTracker.AutoDetectChangesEnabled = false;
+		//	ChangeTracker.AutoDetectChangesEnabled = false;
 		}
 
 		public DbSet<Laptop> Laptops { get; set; }

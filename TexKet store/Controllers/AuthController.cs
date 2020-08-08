@@ -18,7 +18,6 @@ using TexKet_store.ViewModels;
 
 namespace TexKet_store.Controllers
 {
-	[Route("api/[controller]")]
 	public class AuthController : Controller
 	{
 		private readonly IMapper _mapper;
@@ -40,7 +39,6 @@ namespace TexKet_store.Controllers
 			_signInManager = signInManager;
 			_jwtSettings = jwtSettings.Value;
 		}
-		[ActionName("Register")]
 		[HttpGet]
 		public IActionResult Register()
 		{
@@ -74,28 +72,42 @@ namespace TexKet_store.Controllers
 
 			return View(model);
 		}
-	
 
-	
-		[HttpPost("SignIn")]
-		public async Task<IActionResult> SignIn(UserLoginResource userLoginResource)
+		[HttpPost]
+		public async Task<IActionResult> Logout()
 		{
-			var user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginResource.Email);
+			await _signInManager.SignOutAsync();
+			return RedirectToAction("index", "Home");
+		}
+
+		[HttpGet]
+		public IActionResult SignIn()
+		{
+			return View();
+		}
+	
+		[HttpPost]
+		public async Task<IActionResult> SignIn(SignInViewModel model)
+		{
+			var user = _userManager.Users.SingleOrDefault(u => u.UserName == model.Email);
 			if (user is null)
 			{
 				return NotFound("User not found");
 			}
 
-			var userSigninResult = await _userManager.CheckPasswordAsync(user, userLoginResource.Password);
+			var userSigninResult = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
-			if (userSigninResult)
+			if (userSigninResult.Succeeded)
 			{
 				var roles = await _userManager.GetRolesAsync(user);
-				return Ok(GenerateJwt(user, roles));
+				return RedirectToAction("index", "home");
 			}
 
-			return BadRequest("Email or password incorrect.");
+			ModelState.AddModelError(String.Empty, "Login or Password is incorrect");
+			return View(model);
 		}
+
+
 
 		[HttpPost("Roles")]
 		public async Task<IActionResult> CreateRole(string roleName)

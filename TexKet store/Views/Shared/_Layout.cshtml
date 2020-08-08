@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<AppUser> SignInManager;
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -27,9 +29,6 @@
 			<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 				<a class="navbar-brand" asp-controller="Home" asp-action="Index">IRP</a>
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-					@*<li class="nav-item active">
-			<a class="nav-link" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
-		</li>*@
 
 					<li class="nav-item active">
 						<a class="nav-link" href="/Laptops/List/">All</a>
@@ -45,9 +44,23 @@
 						</ul>
 					</li>
 				</ul>
-				<form class="form-inline my-2 my-lg-0 m-1">
-					<button class="btn btn-outline-success my-2 my-sm-1" type="submit" asp-controller="Auth" asp-action="Register">SignUp</button>
-				</form>
+				@if (SignInManager.IsSignedIn(User))
+				{
+					<form class="form-inline my-2 my-lg-0 m-1">
+						<button class="btn btn-outline-success my-2 my-sm-1" type="submit" asp-controller="Auth" asp-action="Logout">Logout @User.Identity.Name</button>
+					</form>
+				}
+				else
+				{
+					<form class="form-inline my-2 my-lg-0 m-1">
+						<button class="btn btn-outline-success my-2 my-sm-1" type="submit" asp-controller="Auth" asp-action="Register">Sign Up</button>
+					</form>
+
+					<form class="form-inline my-2 my-lg-0 m-1">
+						<button class="btn btn-outline-success my-2 my-sm-1" type="submit" asp-controller="Auth" asp-action="SignIn">Sign In</button>
+					</form>
+				}
+				
 				<form class="form-inline my-2 my-lg-0 m-1">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit" asp-controller="ShopCart" asp-action="ShopCart">Cart</button>
 				</form>
