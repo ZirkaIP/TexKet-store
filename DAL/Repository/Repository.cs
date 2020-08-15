@@ -30,9 +30,9 @@ namespace DAL.Repository
 			await Context.SaveChangesAsync();
 		}
 
-		public IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
+		public  IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
 		{
-			return Context.Set<TEntity>().AsNoTracking().Where(predicate);
+			return  Context.Set<TEntity>().AsNoTracking().Where(predicate);
 		}
 
 		public async  Task<IEnumerable<TEntity>> GetAllAsync()

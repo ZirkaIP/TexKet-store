@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using Common.Entities;
@@ -17,10 +19,24 @@ namespace BLL.Services
 
 		public async Task<IEnumerable<Product>> GetAllProducts()
 		{
-			var productsList = _unitOfWork.Products.GetAllAsync();
-			return await  productsList;
+			var productsList =  await _unitOfWork.Products.GetAllAsync();
+			return  productsList;
 		}
 
+		public IEnumerable<Product> GetCategoryProducts(string category)
+		{
+			//var productCategory = 
+			//if (string.Equals(, category, StringComparison.OrdinalIgnoreCase))
+			//{
+			//	laptops = allLaptops.Laptops.Where(i => i.Category.CategoryName.Equals("Xiaomi")).OrderBy(i => i.Price);
+			//}
+
+			var categoryProducts = _unitOfWork.Products
+				.FindBy(i => i.Category.CategoryName.Equals(category));
+
+			var categoryProductsList = categoryProducts.ToList();
+			return  categoryProductsList;
+		}
 
 	}
 
