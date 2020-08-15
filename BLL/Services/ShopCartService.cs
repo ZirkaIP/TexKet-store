@@ -20,16 +20,18 @@ namespace BLL.Services
 			_unitOfWork = unitOfWork;
 		}
 
-		public void AddToCart(Product product, int amount)
+		public async Task AddToCart(Product product, int amount)
 		{
-			ShopCartItem cartItem = new ShopCartItem()
+			
+
+			await _unitOfWork.ShopCartItems.AddAsync(new ShopCartItem()
 			{
+				Id = Guid.NewGuid(),
 				ShopCartId = cart.CartId,
 				Product = product,
 				Price = product.Price
-			};
+			});
 
-			_unitOfWork.ShopCartItems.AddAsync(cartItem);
 		}
 
 		public async  ValueTask<Product> GetProductById(Guid id)

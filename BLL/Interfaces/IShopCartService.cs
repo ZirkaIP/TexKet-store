@@ -10,7 +10,7 @@ namespace BLL.Interfaces
 	{
 		public ValueTask<Product> GetProductById(Guid id);
 
-		public void AddToCart(Product product, int amount);
+		public Task AddToCart(Product product, int amount);
 
 		public List<ShopCartItem> GetCartItems();
 	}

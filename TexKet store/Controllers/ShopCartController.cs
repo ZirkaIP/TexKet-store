@@ -35,7 +35,7 @@ namespace TexKet_store.Controllers
 	        var item = await _shopCartService.GetProductById(id);
 	        if (item != null)
 	        {
-		        _shopCartService.AddToCart(item,1);
+		        await _shopCartService.AddToCart(item,1);
 	        }
 	        return RedirectToAction("GetCartItems");
 		}
