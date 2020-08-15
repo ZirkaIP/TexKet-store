@@ -18,7 +18,7 @@ namespace TexKet_store.Controllers
 	    {
 		    _shopCartService = shopCartService;
 	    }
-        public ViewResult ShopCart()
+        public ViewResult GetCartItems()
         {
 	        var items = _shopCartService.GetCartItems();
 	        _shopCart.ToPayList = items;
@@ -28,7 +28,16 @@ namespace TexKet_store.Controllers
 		        Cart = _shopCart
 	        };
 	        return View(obj);
-
         }
+
+        public async Task<RedirectToActionResult> AddToCart(Guid id)
+        {
+	        var item = await _shopCartService.GetProductById(id);
+	        if (item != null)
+	        {
+		        _shopCartService.AddToCart(item,1);
+	        }
+	        return RedirectToAction("GetCartItems");
+		}
     }
 }

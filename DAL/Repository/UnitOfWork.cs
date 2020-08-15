@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Entities;
 using Common.Interfaces;
 using Common.Models;
@@ -17,18 +14,12 @@ namespace DAL.Repository
 		public UnitOfWork(DatabaseContext context)
 		{
 			_context = context;
-			 Laptops = new Repository<Laptop>(_context);
-			 Cameras = new  Repository<Camera>(_context);
-			 Smartphones = new Repository<Smartphone>(_context);
+			 Products = new Repository<Product>(_context);
 			 Orders = new Repository<Order>(_context);
 			 ShopCartItems = new Repository<ShopCartItem>(_context);
 		}
 
-		public IGenericRepository<Laptop> Laptops { get; }
-
-		public IGenericRepository<Camera> Cameras { get; }
-
-		public IGenericRepository<Smartphone> Smartphones { get; }
+		public IGenericRepository<Product> Products { get; }
 
 		public IGenericRepository<Order> Orders { get; }
 

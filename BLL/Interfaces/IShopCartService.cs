@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common.Entities;
 using Common.Models;
 
@@ -6,7 +8,9 @@ namespace BLL.Interfaces
 {
 	public interface IShopCartService
 	{
-		void AddToCart(Laptop laptop, int amount);
+		public ValueTask<Product> GetProductById(Guid id);
+
+		public void AddToCart(Product product, int amount);
 
 		public List<ShopCartItem> GetCartItems();
 	}

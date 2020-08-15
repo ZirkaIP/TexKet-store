@@ -78,6 +78,7 @@ namespace TexKet_store
 			services.AddAutoMapper(typeof(Startup));
 			services.AddMvc();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddScoped<IProductService, ProductService>();
 			services.AddScoped<IOrderService, OrderService>();
 			services.AddScoped<IShopCartService, ShopCartService>();
 			services.AddSession();
@@ -99,16 +100,20 @@ namespace TexKet_store
 			app.UseAuth();
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}"
-				);
+				endpoints.MapControllerRoute(
+					"default",
+					"{controller=Home}/{action=Index}/{id?}");
 			});
 
 			app.UseSwagger();
 			app.UseSwaggerUI(c =>
 			{
-				c.RoutePrefix = "";
+				c.RoutePrefix = "swagger";
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "TexKet Store");
 			});
+
+			
 		}
+
 	}
 }

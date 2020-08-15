@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using Common.Entities;
+﻿using Common.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL.Configurations
 {
-	class LaptopConfiguration : IEntityTypeConfiguration<Laptop>
+	class ProductConfiguration : IEntityTypeConfiguration<Product>
 	{
-		public void Configure(EntityTypeBuilder<Laptop> builder)
+		public void Configure(EntityTypeBuilder<Product> builder)
 		{
 			builder
-				.HasKey(l => l.LaptopId);
+				.HasKey(l => l.ProductId);
 
 			builder
-				.Property(l => l.LaptopId);
+				.Property(l => l.ProductId)
+				.ValueGeneratedOnAdd();
 
 			builder
 				.Property(l => l.Brand)
@@ -27,13 +26,12 @@ namespace DAL.Configurations
 				.HasMaxLength(50);
 
 			builder
-				.Property(l => l.AvailableQuantity)
+				.Property(l => l.AmountAvailable)
 				.IsRequired();
 
 			builder
 				.Property(l => l.Price)
 				.IsRequired();
-
 		}
 	}
 }

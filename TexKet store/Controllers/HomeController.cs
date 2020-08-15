@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using Common.Entities;
 using Common.Interfaces;
 using DAL.DataContext;
 using DAL.Repository;
@@ -11,27 +13,25 @@ using TexKet_store.ViewModels;
 
 namespace TexKet_store.Controllers
 {
-	public class OrderRequest
-	{
-		public Guid ProductId { get; set; }
-		public string UserAddress { get; set; }
-		public uint ProductAmount { get; set; }
-	}
-
+	
 	public class HomeController : Controller
 
 	{
-		private readonly OrderRequest _orderRequest = new OrderRequest();
-		private readonly IOrderService _orderService;
-		public HomeController( IOrderService orderService)
+		private readonly IProductService _productService;
+
+		public HomeController(IProductService productService)
 		{
-			_orderService = orderService;
+			_productService = productService;
 		}
+
+		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
-			var orderResult = await _orderService.Create(_orderRequest.ProductId, _orderRequest.ProductAmount,
-				_orderRequest.UserAddress);
-			return View(orderResult);
+			var homeProducts = new HomeViewModel
+			{
+				ProductsList =  await _productService.GetAllProducts()
+			};
+			return View(homeProducts);
 		}
 	}
 }

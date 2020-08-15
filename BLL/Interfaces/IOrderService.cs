@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Common.Models;
+﻿using System.Threading.Tasks;
+using Common.Entities;
 
 namespace BLL.Interfaces
 {
 	public interface IOrderService
 	{
-		Task<OrderDetails> Create(Guid productId, uint productAmount, string userAddress);
+		Task<Order> Create(Order order);
 	}
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Common.Models;
-using Common.Entities;
 using BLL.Interfaces;
+using Common.Entities;
 using Common.Interfaces;
+using Common.Models;
 using Microsoft.Data.SqlClient;
 
 namespace BLL.Services
@@ -14,51 +12,82 @@ namespace BLL.Services
 	public class OrderService : IOrderService
 	{
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly  ShopCart shopCart = new ShopCart();
 
-		public async Task<OrderDetails> Create(Guid productId, uint productAmount, string userAddress)
+		public OrderService(IUnitOfWork unitOfWork)
+		{
+			_unitOfWork = unitOfWork;
+		}
+
+		public async Task<Order> Create(Order order)
 		{
 			try
 			{
-				Order order = null;
+				order.OrderTime = DateTime.Now;
+
+				var productsRepo = _unitOfWork.Products;
+
 				await using (var transaction = _unitOfWork.BeginTransaction())
 				{
-					var laptopsRepo = _unitOfWork.Laptops;
-					var laptop = laptopsRepo.FindBy(l => l.LaptopId == productId).FirstOrDefault();
-					laptop.AvailableQuantity -= (int) productAmount;
-
-					await laptopsRepo.UpdateAsync(new[] {laptop});
+					var items = shopCart.ToPayList;
+					foreach (var item in items)
+					{
+						var orderDetail = new OrderDetails()
+						{
+							ProductId  = item.Product.ProductId,
+							OrderId = order.OrderId,
+							Price = item.Product.Price
+						};
+						var product = productsRepo.FindBy(l => l.ProductId == item.Product.ProductId ).FirstOrDefault();
+						product.AmountAvailable -= (int)order.Amount;
+						await productsRepo.UpdateAsync(new[] { product });
+					}
+					
 
 					order = new Order()
 					{
 						OrderId = Guid.NewGuid(),
-						Amount = (int) productAmount,
-						UserAddress = userAddress
+						Amount = (int) order.Amount,
+						UserAddress = order.UserAddress,
+						OrderStatus = "Succeed"
 					};
 
 					await _unitOfWork.Orders.AddAsync(order);
 					await transaction.CommitAsync();
 				}
 
-				return new OrderDetails()
-				{
-					Success = true,
-					Order = order
-				};
+				return order;
 			}
 			catch (SqlException e) when (e.Number == 127)
 			{
-				return new OrderDetails()
+				 new OrderDetails()
 				{
-					Error = "All products have been sold",
-					Success = false
+					OrderResult = "All products have been sold",
+					OrderId = order.OrderId
 				};
+				 return new Order()
+				 {
+					 OrderId = Guid.NewGuid(),
+					 Amount = (int)order.Amount,
+					 UserAddress = order.UserAddress,
+					 OrderStatus = "Failed"
+				 };
 			}
 			catch (Exception e)
 			{
-				return new OrderDetails()
+				 new OrderDetails()
 				{
-					Error = "Oops we have a problem",
-					Success = false
+					OrderResult = "Oops we have a problem",
+					OrderId = order.OrderId
+					
+				};
+
+				return new Order()
+				{
+					OrderStatus = "Failed",
+					OrderId = Guid.NewGuid(),
+					Amount = (int)order.Amount,
+					UserAddress = order.UserAddress
 				};
 			}
 		}

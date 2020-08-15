@@ -1,16 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Common.Entities;
 
 namespace Common.Models
 {
 	public class OrderDetails
 	{
-		public Order Order { get; set; }
+		
+		public Guid Id { get; set; }
 
-		public string Error { get; set; }
+		public decimal  Price { get; set; }
 
-		public bool Success { get; set; }
+		public Guid OrderId { get; set; }
+
+		public Guid ProductId { get; set; }
+
+		public virtual Product Product { get; set; }
+
+		public virtual Order Order { get; set; }
+
+		public string OrderResult { get; set; }
+		
 	}
 }

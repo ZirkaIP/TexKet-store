@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +15,7 @@ namespace Common.Interfaces
         /// </summary>
         /// <param name="id">Product/user id</param>
         /// <returns>T entity</returns>
-        ValueTask<TEntity> GetByIdAsync(int id);
+        ValueTask<TEntity> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Get all queries

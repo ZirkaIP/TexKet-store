@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using BLL.Interfaces;
 using Common.Entities;
 using Common.Interfaces;
@@ -15,22 +15,31 @@ namespace BLL.Services
 		private readonly IUnitOfWork _unitOfWork;
 		readonly ShopCart cart = new ShopCart();
 
-		public void AddToCart(Laptop laptop, int amount)
+		public ShopCartService(IUnitOfWork unitOfWork)
+		{
+			_unitOfWork = unitOfWork;
+		}
+
+		public void AddToCart(Product product, int amount)
 		{
 			ShopCartItem cartItem = new ShopCartItem()
 			{
 				ShopCartId = cart.CartId,
-				Laptop = laptop,
-				Price = laptop.Price
+				Product = product,
+				Price = product.Price
 			};
 
 			_unitOfWork.ShopCartItems.AddAsync(cartItem);
+		}
 
+		public async  ValueTask<Product> GetProductById(Guid id)
+		{
+			return await _unitOfWork.Products.GetByIdAsync(id);
 		}
 
 		public List<ShopCartItem> GetCartItems()
 		{
-			return _unitOfWork.ShopCartItems.FindBy(c => c.ShopCartId == cart.CartId).Include(s => s.Laptop).ToList();
+			return _unitOfWork.ShopCartItems.FindBy(c => c.ShopCartId == cart.CartId).Include(s => s.Product).ToList();
 		}
 	}
 }

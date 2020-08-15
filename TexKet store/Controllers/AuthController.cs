@@ -99,10 +99,9 @@ namespace TexKet_store.Controllers
 
 			if (userSigninResult.Succeeded)
 			{
-				var roles = await _userManager.GetRolesAsync(user);
 				return RedirectToAction("index", "home");
 			}
-
+			
 			ModelState.AddModelError(String.Empty, "Login or Password is incorrect");
 			return View(model);
 		}

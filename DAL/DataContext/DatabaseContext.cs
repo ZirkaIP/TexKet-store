@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using Common.Users.Models;
 using Common.Entities;
+using Common.Models;
+using Common.Users.Models;
 using DAL.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace DAL.DataContext
 {
@@ -13,14 +12,14 @@ namespace DAL.DataContext
 	{
 		public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
 		{
-		//	ChangeTracker.AutoDetectChangesEnabled = false;
+			//ChangeTracker.AutoDetectChangesEnabled = false;
 		}
 
-		public DbSet<Laptop> Laptops { get; set; }
-		public DbSet<Camera> Cameras { get; set; }
-		public DbSet<Smartphone> SmartPhones{ get; set; }
+		public DbSet<Product> Products { get; set; }
 		public DbSet<Category> Categories { get; set; }
+		public DbSet<ShopCartItem> ShopCartItems { get; set; }
 		public DbSet<Order> Orders { get; set; }
+		public DbSet<OrderDetails> OrdersDetails { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -28,13 +27,11 @@ namespace DAL.DataContext
 			base.OnModelCreating(builder);
 
 			builder
-				.ApplyConfiguration(new LaptopConfiguration());
+				.ApplyConfiguration(new ProductConfiguration());
 
 			builder
-				.ApplyConfiguration(new CameraConfiguration());
+				.ApplyConfiguration(new OrderConfiguration());
 
-			builder
-				.ApplyConfiguration(new SmartphoneConfiguration());
 		}
 	}
 

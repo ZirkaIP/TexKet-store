@@ -1,7 +1,11 @@
-﻿@using Common.Models
-@model OrderDetails
+﻿@model HomeViewModel
 
 <h2>Top deals</h2>
 <div class="row mt-5 mb-2">
-	<p>Success:@Model.Success</p>
+	@{
+		foreach (Product item in Model.ProductsList)
+		{
+			@Html.Partial("ProductItem", item)
+		}
+	}
 </div>
