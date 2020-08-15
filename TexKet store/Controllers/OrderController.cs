@@ -28,8 +28,20 @@ namespace TexKet_store.Controllers
 		 [HttpPost]
         public async Task<IActionResult> Checkout(Order order)
         {
-	        var orderResult = await _orderService.Create(_order);
+
+			var orderResult = await _orderService.Create(_order);
+
+			if (ModelState.IsValid)
+	        {
+		        return RedirectToAction("OrderResult");
+	        }
 	        return View(orderResult);
+		}
+
+        public IActionResult OrderResult()
+        {
+	        ViewBag.Message = "Order successfully registered";
+	        return View();
         }
 	}
 }
