@@ -45,36 +45,7 @@ namespace TexKet_store
 				})
 				.AddEntityFrameworkStores<DatabaseContext>()
 				.AddDefaultTokenProviders();
-			services.AddSwaggerGen(options =>
-			{
-				options.SwaggerDoc("v1", new OpenApiInfo { Title = "TexKet store", Version = "v1" });
-
-				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-				{
-					Description = "JWT containing userid claim",
-					Name = "Authorization",
-					In = ParameterLocation.Header,
-					Type = SecuritySchemeType.ApiKey,
-				});
-
-				var security =
-					new OpenApiSecurityRequirement
-					{
-						{
-							new OpenApiSecurityScheme
-							{
-								Reference = new OpenApiReference
-								{
-									Id = "Bearer",
-									Type = ReferenceType.SecurityScheme
-								},
-								UnresolvedReference = true
-							},
-							new List<string>()
-						}
-					};
-				options.AddSecurityRequirement(security);
-			});
+			
 			services.AddAutoMapper(typeof(Startup));
 			services.AddMvc();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -83,7 +54,6 @@ namespace TexKet_store
 			services.AddScoped<IShopCartService, ShopCartService>();
 			services.AddSession();
 			services.AddAuth(jwtSettings);
-			var loggingConfiguration = new ConfigurationBuilder().AddJsonFile("logging.settings.json").Build();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
